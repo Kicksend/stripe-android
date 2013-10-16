@@ -12,3 +12,4 @@ stripe/bin
 example/bin
 example/target
 example/gen
+stripe/build
