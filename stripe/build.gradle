@@ -2,7 +2,8 @@ apply plugin: 'android-library'
 android androidConfiguration
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'junit:junit:4.11'
+    compile 'com.stripe:stripe-java:1.1.15'
 }
 
 android {
