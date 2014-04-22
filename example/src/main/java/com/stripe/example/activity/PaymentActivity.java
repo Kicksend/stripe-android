@@ -1,6 +1,7 @@
 package com.stripe.example.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 
 import com.stripe.example.R;
@@ -8,9 +9,8 @@ import com.stripe.android.Stripe;
 import com.stripe.android.TokenCallback;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
-import com.stripe.exception.*;
-import com.stripe.example.dialog.ValidationErrorDialog;
-import com.stripe.example.dialog.ValidationProgressDialog;
+import com.stripe.example.dialog.ErrorDialogFragment;
+import com.stripe.example.dialog.ProgressDialogFragment;
 import com.stripe.example.PaymentForm;
 import com.stripe.example.TokenList;
 
@@ -18,23 +18,20 @@ import com.stripe.example.TokenList;
 public class PaymentActivity extends FragmentActivity {
 
     /*
-     * You need to set this to your stripe test publishable key.
+     * Change this to your publishable key.
      *
-     * For more info, see https://stripe.com/docs/stripe.js
-     *
-     * E.g.
-     *
-     *   private static final String publishableKey = "pk_something123456789";
-     *
+     * You can get your key here: https://manage.stripe.com/account/apikeys
      */
-    public static final String PUBLISHABLE_KEY = YOUR_PUBLISHABLE_KEY;
+    public static final String PUBLISHABLE_KEY = "pk_test_6pRNASCoBOKtIshFeQd4XMUh";
 
-    ValidationProgressDialog progressDialog;
+    private ProgressDialogFragment progressFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.payment_activity);
+
+        progressFragment = ProgressDialogFragment.newInstance(R.string.progressMessage);
     }
 
     public void saveCreditCard(PaymentForm form) {
@@ -67,17 +64,16 @@ public class PaymentActivity extends FragmentActivity {
     }
 
     private void startProgress() {
-        String progressMessage = getResources().getString(R.string.progressMessage);
-        this.progressDialog = new ValidationProgressDialog(this, progressMessage);
-        this.progressDialog.show();
+        progressFragment.show(getSupportFragmentManager(), "progress");
     }
 
     private void finishProgress() {
-        this.progressDialog.dismiss();
+        progressFragment.dismiss();
     }
 
     private void handleError(String error) {
-        new ValidationErrorDialog(this, error).show();
+        DialogFragment fragment = ErrorDialogFragment.newInstance(R.string.validationErrors, error);
+        fragment.show(getSupportFragmentManager(), "error");
     }
 
     private TokenList getTokenList() {

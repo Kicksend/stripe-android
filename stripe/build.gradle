@@ -3,7 +3,7 @@ android androidConfiguration
 
 dependencies {
     compile 'junit:junit:4.11'
-    compile 'com.stripe:stripe-java:1.1.15'
+    compile 'com.stripe:stripe-java:1.12.0'
 }
 
 android {
